@@ -117,7 +117,13 @@ int main()
 {
     int playerOneScore = 0;
     int playerTwoScore = 0;
-    std::vector<int> line = generateLine(50);
+
+    int cardsQuantity = 0;
+
+    std::cout << "Enter cards quantity" << std::endl;
+    std::cin >> cardsQuantity;
+
+    std::vector<int> line = generateLine(cardsQuantity);
     printVector(line);
 
     while (line.size()) {
