@@ -67,13 +67,13 @@ def dynamic(line, is_turn):
     right_sum = dynamic(line[:-1], not is_turn) + line[-1]
 
     cache[key] = max(left_sum, right_sum)
-    return cache[key]
+    return max(left_sum, right_sum)
 
 
 def dynamic_selection(line):
     left_sum = dynamic(line[1:], False) + line[0]
     right_sum = dynamic(line[:-1], False) + line[-1]
-    select = 0 if left_sum + line[0] > right_sum + line[-1] else -1
+    select = 0 if left_sum > right_sum else -1
     value = line[select]
     del line[select]
     return value

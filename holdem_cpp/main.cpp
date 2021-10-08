@@ -60,12 +60,90 @@ int greedy(std::vector<int>& line) {
     return value;
 }
 
+int dynamic(const std::vector<int>& line, bool isTurn) {
+    if (cache.contains(line)) {
+        return cache[line];
+    }
+
+    if (line.size() <= 0) {
+        return 0;
+    }
+
+    auto begin = line.begin();
+    auto end = --line.end();
+
+    if (!isTurn) {
+        if (*begin > *end) {
+            return dynamic(std::vector<int>(++line.begin(), line.end()), !isTurn);
+        } else {
+            return dynamic(std::vector<int>(line.begin(), --line.end()), !isTurn);
+        }
+    }
+
+    if (line.size() < 3) {
+        auto select = *begin > *end ? begin : end;
+        int value = *select;
+        return value;
+    }
+
+    int leftSum = dynamic(std::vector<int>(++line.begin(), line.end()), !isTurn) + *begin;
+    int rightSum = dynamic(std::vector<int>(line.begin(), --line.end()), !isTurn) + *end;
+
+    cache.put(line, std::max(leftSum, rightSum));
+    return std::max(leftSum, rightSum);
+}
+
+int dynamicSelection(std::vector<int>& line) {
+    if (line.size() <= 1) {
+        auto begin = line.begin();
+        int value = *begin;
+        line.erase(begin);
+        return value;
+    }
+
+    auto begin = line.begin();
+    auto end = --line.end();
+
+    int leftSum = dynamic(std::vector<int>(++line.begin(), line.end()), false) + *begin;
+    int rightSum = dynamic(std::vector<int>(line.begin(), --line.end()), false) + *end;
+
+    auto select = leftSum > rightSum ? begin : end;
+    int value = *select;
+    line.erase(select);
+    return value;
+}
+
 int main()
 {
-    std::vector<int> line = generateLine(10);
+    int playerOneScore = 0;
+    int playerTwoScore = 0;
+    std::vector<int> line = generateLine(50);
     printVector(line);
-    greedy(line);
-    printVector(line);
+
+    while (line.size()) {
+        int selection = greedy(line);
+        playerOneScore += selection;
+        std::cout << "player one selected: " << playerOneScore << std::endl;
+        printVector(line);
+
+        if (line.size()) {
+            int selection = dynamicSelection(line);
+            playerTwoScore += selection;
+            std::cout << "player two selected: " << playerOneScore << std::endl;
+            printVector(line);
+        }
+    }
+
+    if (playerOneScore > playerTwoScore) {
+        std::cout << "player one win with score: " << playerOneScore << std::endl;
+        std::cout << "player two score: " << playerTwoScore << std::endl;
+    } else if (playerOneScore == playerTwoScore) {
+        std::cout << "player one score: " << playerOneScore << std::endl;
+        std::cout << "player two score: " << playerTwoScore << std::endl;
+    } else {
+        std::cout << "player two win with score: " << playerTwoScore << std::endl;
+        std::cout << "player one score: " << playerOneScore << std::endl;
+    }
 
     cache.put(line, 15);
     std::cout << cache[line] << std::endl;
