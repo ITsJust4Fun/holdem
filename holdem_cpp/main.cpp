@@ -144,7 +144,4 @@ int main()
         std::cout << "player two win with score: " << playerTwoScore << std::endl;
         std::cout << "player one score: " << playerOneScore << std::endl;
     }
-
-    cache.put(line, 15);
-    std::cout << cache[line] << std::endl;
 }
