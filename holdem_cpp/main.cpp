@@ -123,13 +123,13 @@ int main()
     while (line.size()) {
         int selection = greedy(line);
         playerOneScore += selection;
-        std::cout << "player one selected: " << playerOneScore << std::endl;
+        std::cout << "player one selected: " << selection << std::endl;
         printVector(line);
 
         if (line.size()) {
             int selection = dynamicSelection(line);
             playerTwoScore += selection;
-            std::cout << "player two selected: " << playerOneScore << std::endl;
+            std::cout << "player two selected: " << selection << std::endl;
             printVector(line);
         }
     }
