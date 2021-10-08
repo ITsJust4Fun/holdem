@@ -120,8 +120,18 @@ int main()
 
     int cardsQuantity = 0;
 
-    std::cout << "Enter cards quantity" << std::endl;
+    std::cout << "Enter cards quantity:" << std::endl;
     std::cin >> cardsQuantity;
+
+    if (cardsQuantity > 50) {
+        std::cout << "Reached max value! Set quantity to 50!" << std::endl;
+        cardsQuantity = 50;
+    }
+
+    if (cardsQuantity < 1) {
+        std::cout << "Reached min value! Set quantity to 1!" << std::endl;
+        cardsQuantity = 1;
+    }
 
     std::vector<int> line = generateLine(cardsQuantity);
     printVector(line);
@@ -129,25 +139,25 @@ int main()
     while (line.size()) {
         int selection = greedy(line);
         playerOneScore += selection;
-        std::cout << "player one selected: " << selection << std::endl;
+        std::cout << "player one (greedy) selected: " << selection << std::endl;
         printVector(line);
 
         if (line.size()) {
             int selection = dynamicSelection(line);
             playerTwoScore += selection;
-            std::cout << "player two selected: " << selection << std::endl;
+            std::cout << "player two (dynamic) selected: " << selection << std::endl;
             printVector(line);
         }
     }
 
     if (playerOneScore > playerTwoScore) {
-        std::cout << "player one win with score: " << playerOneScore << std::endl;
-        std::cout << "player two score: " << playerTwoScore << std::endl;
+        std::cout << "player one (greedy) win with score: " << playerOneScore << std::endl;
+        std::cout << "player two (dynamic) score: " << playerTwoScore << std::endl;
     } else if (playerOneScore == playerTwoScore) {
-        std::cout << "player one score: " << playerOneScore << std::endl;
-        std::cout << "player two score: " << playerTwoScore << std::endl;
+        std::cout << "player one (greedy) score: " << playerOneScore << std::endl;
+        std::cout << "player two (dynamic) score: " << playerTwoScore << std::endl;
     } else {
-        std::cout << "player two win with score: " << playerTwoScore << std::endl;
-        std::cout << "player one score: " << playerOneScore << std::endl;
+        std::cout << "player two (dynamic) win with score: " << playerTwoScore << std::endl;
+        std::cout << "player one (greedy) score: " << playerOneScore << std::endl;
     }
 }
